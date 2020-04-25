@@ -1,4 +1,3 @@
-
 # it would be better to make this an object and not pollute the global namespace
 GCODE_OUTPUT_FILE = None
 GCODE_FEED_RATE = None
@@ -19,6 +18,7 @@ def setup(feed_rate, plunge_feed_rate, spindle_speed):
     GCODE_SPINDLE_SPEED = spindle_speed
 
     print('G90', file=GCODE_OUTPUT_FILE)
+
     print('F{0} S{1}'.format(GCODE_FEED_RATE, GCODE_SPINDLE_SPEED), file=GCODE_OUTPUT_FILE)
 
 
@@ -74,4 +74,3 @@ def goto_xy(x, y):
 
 def clockwise_arc(to_x, to_y, center_offset_x, center_offset_y):
     print('G2 X{0} Y{1} I{2} J{3}'.format(to_x, to_y, center_offset_x, center_offset_y), file=GCODE_OUTPUT_FILE)
-

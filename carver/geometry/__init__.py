@@ -20,6 +20,17 @@ def rotate_point(x, y, rad):
     return to_x_y(r, theta)
 
 
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def translate(self, x, y):
+        self.x += x
+        self.y += y
+        return self
+
+
 class Circle:
     def __init__(self, center_x, center_y, radius):
         self.center_x = center_x
@@ -29,9 +40,11 @@ class Circle:
     def translate(self, x, y):
         self.center_x += x
         self.center_y += y
+        return self
 
     def rotate(self, rads):
         self.center_x, self.center_y = rotate_point(self.center_x, self.center_y, rads)
+        return self
 
 
 class Line:
@@ -60,10 +73,12 @@ class Line:
         self.y1 += y
         self.x2 += x
         self.y2 += y
+        return self
 
     def rotate(self, rad):
         self.x1, self.y1 = rotate_point(self.x1, self.y1, rad)
         self.x2, self.y2 = rotate_point(self.x2, self.y2, rad)
+        return self
 
     def slope(self):
         if self.x1 == self.x2:
@@ -113,15 +128,18 @@ def line_circle_intersect(line, circle):
     # vertical line
     if m is None:
         M = line.x1
+        A = 1
+        B = -2 * circle.center_y
         C = M**2 - 2*M*circle.center_x + circle.center_x**2 + circle.center_y**2 - circle.radius ** 2
-        if circle.center_y ** 2 - C < 0:
+        D = B ** 2 - 4 * C
+        if D < 0:
             pass
-        elif circle.center_y ** 2 - C == 0:
-            results.append((M, -1 * circle.center_y))
+        elif D == 0:
+            results.append((M, (-1 * B) / (2 * A)))
         else:
-            D = math.sqrt(circle.center_y ** 2 - C)
-            results.append((M, -1 * circle.center_y + D))
-            results.append((M, -1 * circle.center_y - D))
+
+            results.append((M, (-1 * B + math.sqrt(D))/(2 * A)))
+            results.append((M, (-1 * B - math.sqrt(D))/(2 * A)))
     else:
         A = 1 + m ** 2
         b = line.y_of(0)
